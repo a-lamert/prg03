@@ -13,6 +13,17 @@ public class TicTacToeGame {
   }
 
   /**
+   * Initializes the game board with empty spaces.
+   */
+  private void initializeBoard() {
+    for (int i = 0; i < 3; i++) {
+      for (int j = 0; j < 3; j++) {
+        board[i][j] = '-';
+      }
+    }
+  }
+
+  /**
    * Starts the game loop, allowing players to take turns until the game is over. Prompts the
    * current player to enter their move
    */
@@ -45,24 +56,15 @@ public class TicTacToeGame {
           System.out.println(" It'S a tie!");
           gameOver = true;
         } else {
-          currentPlayer = (currentPlayer == 'X') ? '0' : 'X';
+          switchPlayer();
         }
+
       } else {
         System.out.println("Invalid move. Try again: ");
       }
     }
   }
 
-  /**
-   * Initializes the game board with empty spaces.
-   */
-  private void initializeBoard() {
-    for (int i = 0; i < 3; i++) {
-      for (int j = 0; j < 3; j++) {
-        board[i][j] = '-';
-      }
-    }
-  }
 
   /**
    * Prints the current state of the game board.
@@ -70,7 +72,7 @@ public class TicTacToeGame {
   private void printBoard() {
     System.out.println("_____________");
     for (int i = 0; i < 3; i++) {
-      System.out.println("| ");
+      System.out.print("| ");
       for (int j = 0; j < 3; j++) {
         System.out.print(board[i][j] + " | ");
       }
@@ -88,6 +90,10 @@ public class TicTacToeGame {
    */
   private boolean isValidMove(int row, int col) {
     return row >= 0 && row < 3 && col >= 0 && col < 3 && board[row][col] == '-';
+  }
+
+  private void switchPlayer() {
+    currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
   }
 
   /**
@@ -115,9 +121,10 @@ public class TicTacToeGame {
   }
 
   /**
-   * Checks if the  game has ended in a draw
+   * Checks if the  game is a draw  by iterating through the game board to find
+   * any empty cells ('-').
    *
-   * @return True if the game is  a draw, false otherwise.
+   * @return true if the game is  a draw, false otherwise.
    */
   private boolean checkDraw() {
 
@@ -126,11 +133,20 @@ public class TicTacToeGame {
       for (int j = 0; j < 3; j++) {
         if (board[i][j] == '-') {
           hasEmptyCell = true;
+          break;
         }
       }
-    }
+      if (hasEmptyCell) {
+        break;
+      }
 
-    return !hasEmptyCell && !checkWin();
+    }
+    if (!hasEmptyCell && !checkWin()) {
+      gameOver = true;
+      return true;
+    } else {
+      return false;
+    }
   }
 }
 
