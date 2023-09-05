@@ -40,6 +40,16 @@ public class TicTacToeGameTest {
     return row >= 0 && row < 3 && col >= 0 && col < 3 && board[row][col] == '-';
   }
 
+  private void makeMove(int row, int col) {
+    board[row][col] = currentPlayer;
+    switchPlayer();
+  }
+
+
+  private void switchPlayer() {
+    currentPlayer = (currentPlayer == 'X') ?'O': 'X';
+  }
+
   private boolean checkWin() {
 
     for (int i = 0; i < 3; i++) {
@@ -77,7 +87,7 @@ public class TicTacToeGameTest {
         }
       }
     }
-
+    gameOver = true;
     return true;
   }
 
